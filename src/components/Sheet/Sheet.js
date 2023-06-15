@@ -777,24 +777,24 @@ const Sheet = () => {
       </div>
       {/* Renaming sheet Box */}
       <Menu showMenu={showMenu} />
-      {/* <button
+      <button
         className="HeaderBtn"
         style={{
           display: "flex",
           justifyContent: "center",
           alignItems: "center",
-          marginLeft: "1280px",
+          marginLeft: "1380px",
           border: "100%",
-          borderRadius: "100%",
-          width: "100px",
-          height: "100px",
+          borderRadius: "20px 0px 10px 20px",
+          width: "130px",
+          height: "80px",
           marginTop: "-92px",
           fontSize: "25px",
         }}
         onClick={handleChat}
       >
         Chat
-      </button> */}
+      </button>
       <div
         id="chatBox"
         style={{

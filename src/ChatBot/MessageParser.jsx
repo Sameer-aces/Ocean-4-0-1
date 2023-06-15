@@ -18,7 +18,7 @@ const MessageParser = ({ children, actions }) => {
     if (lowercase.includes("row")) {
       actions.handleRowValue();
     }
-    if (lowercase.includes("col")) {
+    if (lowercase.includes("column")) {
       actions.handleColValue();
     }
     if (lowercase.includes("exit")) {
