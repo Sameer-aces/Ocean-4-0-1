@@ -24,15 +24,18 @@ function Filter() {
     setFilterOperator,
     setFilterType,
     filterValue,
+    modalIsOpenFilter,
+    setIsOpenFilter,
+    selectValue,
+    setSelectValue,
   } = useContext(GlobalContext);
   let subtitle;
-  const [modalIsOpen, setIsOpen] = useState(false);
-  const [selectValue, setSelectValue] = useState();
   const [x, setX] = useState();
 
   function openModal(e) {
-    setIsOpen(true);
+    setIsOpenFilter(true);
     setFilterType(e.target.value);
+    console.log("from chat");
     let str = selectedSheet?.row?.values.map((d) => (
       <option className="filterOptions" value={d}>
         {d}
@@ -47,7 +50,7 @@ function Filter() {
   }
 
   function closeModal() {
-    setIsOpen(false);
+    setIsOpenFilter(false);
   }
   function filterOperator(e) {
     setFilterOperator(e.target.value);
@@ -64,7 +67,7 @@ function Filter() {
       </select>
       <Scrollbars>
         <Modal
-          isOpen={modalIsOpen}
+          isOpen={modalIsOpenFilter}
           onAfterOpen={afterOpenModal}
           onRequestClose={closeModal}
           style={customStyles}

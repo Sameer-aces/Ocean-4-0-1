@@ -59,9 +59,16 @@ export const GlobalProvider = ({ children }) => {
   const [loading, setLoading] = useState(false);
   const [bufferingModal, setBufferingModal] = useState();
   const [fileName, setFileName] = useState();
+  const [modalIsOpenFilter, setIsOpenFilter] = useState(false);
+  const [selectValue, setSelectValue] = useState();
+
   return (
     <GlobalContext.Provider
       value={{
+        selectValue,
+        setSelectValue,
+        modalIsOpenFilter,
+        setIsOpenFilter,
         fileName,
         setFileName,
         bufferingModal,

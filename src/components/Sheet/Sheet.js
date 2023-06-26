@@ -18,9 +18,10 @@ import setAuthToken from "../../utils/setAuthToken";
 import Header2 from "../Headers/Header2";
 import axios from "axios";
 import Crosstable from "./Crosstable";
-import Test from "./Test";
+import ChatBot from "./ChatBot";
 import ClipLoader from "react-spinners/ClipLoader";
 import Bufferingwindow from "./Bufferingwindow";
+import AlanTalk from "./AlanTalk";
 
 const Sheet = () => {
   const [sheetParams, setSheetParam] = useState();
@@ -102,7 +103,8 @@ const Sheet = () => {
     setSheets(tempSheets);
   };
   //Graph Selection
-  const selectGraph = (event) => {
+  const selectGraph = (event, name) => {
+    console.log(name, event);
     const tempSheets = sheets.map((s) =>
       s.name === sheetParam
         ? {
@@ -276,6 +278,7 @@ const Sheet = () => {
     <>
       <Header />
       <Header2 />
+      <AlanTalk processCsv={processCsv} selectGraph={selectGraph} />
       <hr></hr>
       <div className="third-line">
         <div className="field">
@@ -792,6 +795,7 @@ const Sheet = () => {
           fontSize: "25px",
         }}
         onClick={handleChat}
+        handleSorting={handleSorting}
       >
         Chat
       </button>
@@ -804,7 +808,7 @@ const Sheet = () => {
           marginTop: "-68vh",
         }}
       >
-        <Test processCsv={processCsv} handleDrop={handleDrop} />
+        <ChatBot processCsv={processCsv} handleDrop={handleDrop} />
       </div>
 
       <Footer />

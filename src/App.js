@@ -11,7 +11,7 @@ import { Provider } from "react-redux";
 import { GlobalContext } from "./GlobalProvider";
 import Logins from "./components/auth/Logins";
 import PrivateRoutes from "./components/private-route/PrivateRoutes";
-import Test from "./components/Sheet/Test";
+import Speech from "./components/Sheet/Speech";
 const App = () => {
   const {} = useContext(GlobalContext);
 
@@ -29,7 +29,7 @@ const App = () => {
             <Route path="AnalyticsMain" element={<AnalyticsMain />} />
           </Route>
           {/* <Route path="/test" element={<Plot />} /> */}
-          <Route path="/test" element={<Test />} />
+          <Route path="/test" element={<Speech />} />
         </Routes>
       </div>
     </>

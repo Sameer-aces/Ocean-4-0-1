@@ -1,11 +1,23 @@
 import React, { useContext } from "react";
 import { GlobalContext } from "../GlobalProvider";
+import SpeechRecognition, {
+  useSpeechRecognition,
+} from "react-speech-recognition";
 
 const MessageParser = ({ children, actions }) => {
   const { selectedWB, selectedSheet } = useContext(GlobalContext);
+  const {
+    transcript,
+    listening,
+    resetTranscript,
+    browserSupportsSpeechRecognition,
+  } = useSpeechRecognition();
   const parse = (message) => {
+    console.log(transcript, message);
+
     const lowercase = message.toLowerCase();
     if (lowercase.includes("hello")) {
+      console.log(lowercase, "test");
       actions.handleHello();
     }
     if (lowercase.includes("plot" || "graph" || "gra")) {
@@ -21,8 +33,14 @@ const MessageParser = ({ children, actions }) => {
     if (lowercase.includes("column")) {
       actions.handleColValue();
     }
-    if (lowercase.includes("exit")) {
-      actions.closeBot();
+    if (lowercase.includes("filter")) {
+      actions.filter();
+    }
+    if (lowercase.includes("condition")) {
+      actions.Conditions();
+    }
+    if (lowercase.includes("sort")) {
+      actions.handleSort();
     }
   };
 

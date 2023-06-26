@@ -1,6 +1,5 @@
 import { useContext } from "react";
 import { createChatBotMessage } from "react-chatbot-kit";
-import { GlobalContext } from "../GlobalProvider";
 
 const config = {
   initialMessages: [createChatBotMessage(`Welcome to Ocean`)],

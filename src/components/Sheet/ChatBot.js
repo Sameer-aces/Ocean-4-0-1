@@ -6,7 +6,7 @@ import MessageParser from "../../ChatBot/MessageParser";
 import ActionProvider from "../../ChatBot/ActionProvider";
 import config from "../../ChatBot/config";
 
-const Test = () => {
+const ChatBot = () => {
   const { loading } = useContext(GlobalContext);
   const styleLoader: CSSProperties = {
     display: "block",
@@ -31,4 +31,4 @@ const Test = () => {
   );
 };
 
-export default Test;
+export default ChatBot;

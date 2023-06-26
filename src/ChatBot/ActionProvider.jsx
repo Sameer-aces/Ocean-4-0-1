@@ -1,6 +1,9 @@
-import React, { useContext, useParams, useState } from "react";
+import React, { useContext, useState } from "react";
 import { createChatBotMessage } from "react-chatbot-kit";
 import { GlobalContext } from "../GlobalProvider";
+import { useNavigate } from "react-router-dom";
+import { handleSorting } from "../components/Sheet/Sheet";
+import { logoutUser, setCurrentUser } from "../components/actions/authActions";
 
 const ActionProvider = ({
   createChatBotMessage,
@@ -8,14 +11,21 @@ const ActionProvider = ({
   children,
   props,
 }) => {
+  let navigate = useNavigate();
+
   const {
     loginUsername,
+    setIsOpenFilter,
+    setFilterValue,
     selectedSheet,
+    setSelectValue,
+    setIsOpen,
     sheets,
     setSheets,
     selectedWB,
     selectedWBSheet,
     columns,
+    setFilterOperator,
   } = useContext(GlobalContext);
   const [x, setx] = useState();
   //   const sheetParam = useParams();
@@ -56,7 +66,8 @@ const ActionProvider = ({
   };
 
   const handlePlot = () => {
-    const botMessage = createChatBotMessage(
+    const botMessage = createChatBotMessage("Select type of plot");
+    const botMessages = createChatBotMessage(
       options.map((x) => (
         <button
           key={options.id}
@@ -70,7 +81,7 @@ const ActionProvider = ({
     );
     setState((prev) => ({
       ...prev,
-      messages: [...prev.messages, botMessage],
+      messages: [...prev.messages, botMessage, botMessages],
     }));
   };
   const processCsv = (jsonData) => {
@@ -178,7 +189,40 @@ const ActionProvider = ({
       messages: [...prev.messages, botMessage],
     }));
   };
-  const closeBot = () => {};
+  const filter = (e) => {
+    const botMessage = createChatBotMessage("Select Filter Value");
+    setState((prev) => ({
+      ...prev,
+      messages: [...prev.messages, botMessage],
+    }));
+    setIsOpenFilter(true);
+    setFilterOperator(">");
+    setFilterValue(2000000);
+    console.log("from chat");
+    let str = selectedSheet?.row?.values.map((d) => (
+      <option className="filterOptions" value={d}>
+        {d}
+      </option>
+    ));
+    setSelectValue(str);
+  };
+  const Conditions = () => {
+    const botMessage = createChatBotMessage("Apply your conditions");
+    setState((prev) => ({
+      ...prev,
+      messages: [...prev.messages, botMessage],
+    }));
+    setIsOpen(true);
+  };
+  const handleSort = () => {
+    const botMessage = createChatBotMessage("Select Ascending or Descending");
+    setState((prev) => ({
+      ...prev,
+      messages: [...prev.messages, botMessage],
+    }));
+    logoutUser();
+    navigate("/", { replace: true });
+  };
   return (
     <div>
       {React.Children.map(children, (child) => {
@@ -188,7 +232,9 @@ const ActionProvider = ({
             handlePlot,
             handleRowValue,
             handleColValue,
-            closeBot,
+            filter,
+            Conditions,
+            handleSort,
             errors,
           },
         });

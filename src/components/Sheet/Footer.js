@@ -3,6 +3,7 @@ import { FaCompress, FaAngleRight, FaForward, FaAdjust } from "react-icons/fa";
 import { Link, useParams } from "react-router-dom";
 import { GlobalContext } from "../../GlobalProvider";
 import Menu from "../../Menu";
+import AlanTalk from "./AlanTalk";
 import "../../App.css";
 const Footer = () => {
   // const { x, y, showMenu } = useRightClickMenu();
@@ -20,6 +21,7 @@ const Footer = () => {
     setDisableComponent,
   } = useContext(GlobalContext);
   const handleAddSheet = () => {
+    console.log("handleAddSheet");
     const newSheet = { name: `sheet${sheets.length}`, workbooks: [], rows: [] };
     setSheets((prev) => [...prev, newSheet]);
   };
@@ -67,10 +69,15 @@ const Footer = () => {
       document.getElementById("disableFooterAnalytics").style.opacity = 0.1;
     }
   }); //
+
   return (
     <>
       <hr></hr>
-
+      {/* <AlanTalk
+        handleAddSheet={handleAddSheet}
+        handleAddDashboard={handleAddDashboard}
+        handleAddStory={handleAddStory}
+      /> */}
       <div className="footer">
         <button>
           <Link to="/Datasource">Data Source</Link>
