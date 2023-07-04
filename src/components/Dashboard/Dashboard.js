@@ -25,10 +25,12 @@ const Dashboard = () => {
 
   const handleDrop = (index) => {
     const dragSheet = dragItem.current;
+    console.log(dragSheet, dragItem);
     const updatedDashboard = dashboards.find(
       (dashboard) => dashboard.name === dashboardParam
     );
     updatedDashboard.graphs[index] = dragSheet;
+    console.log(updatedDashboard.graphs[index], updatedDashboard);
     const tempDashboards = dashboards.map((dashboard) =>
       dashboard.name === dashboardParam ? updatedDashboard : dashboard
     );

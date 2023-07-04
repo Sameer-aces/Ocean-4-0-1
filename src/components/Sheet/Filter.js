@@ -24,6 +24,8 @@ function Filter() {
     setFilterOperator,
     setFilterType,
     filterValue,
+    filterOperator,
+    filterType,
     modalIsOpenFilter,
     setIsOpenFilter,
     selectValue,
@@ -34,6 +36,7 @@ function Filter() {
 
   function openModal(e) {
     setIsOpenFilter(true);
+    console.log(e.target.value);
     setFilterType(e.target.value);
     console.log("from chat");
     let str = selectedSheet?.row?.values.map((d) => (
@@ -41,6 +44,7 @@ function Filter() {
         {d}
       </option>
     ));
+    console.log(str);
     setSelectValue(str);
   }
   function afterOpenModal() {
@@ -52,7 +56,8 @@ function Filter() {
   function closeModal() {
     setIsOpenFilter(false);
   }
-  function filterOperator(e) {
+  function filterOperators(e) {
+    console.log("operator filter");
     setFilterOperator(e.target.value);
     if (e.target.value === "select") {
       setFilterOperator(null);
@@ -60,6 +65,11 @@ function Filter() {
       setFilterType(null);
     }
   }
+  const filterCheck = (e) => {
+    console.log("here");
+    setFilterValue(e.target.value);
+  };
+  console.log(filterType, filterOperator, filterValue, "filter");
   return (
     <div>
       <select onClick={openModal}>
@@ -78,7 +88,7 @@ function Filter() {
             <label>Target:{selectedSheet?.row?.key}</label>
             <br></br>
             <label>Operator:</label>
-            <select onClick={filterOperator} id="filter">
+            <select onClick={filterOperators} id="filter">
               <option value="">select</option>
               <option value="select">Null</option>
               <option value="=">=</option>
@@ -88,13 +98,14 @@ function Filter() {
               <option value=">">{">"}</option>
             </select>
             <br></br>
-            <label onClick={(e) => setFilterValue(e.target.value)}>
+            <label onClick={filterCheck}>
               Value:
               <input
                 type="text"
-                onChange={(e) => setFilterValue(e.target.value)}
+                placeholder="enter value"
+                onChange={filterCheck}
               />
-              <select>{selectValue}</select>
+              <select>{selectValue}ss</select>
             </label>
           </form>
         </Modal>

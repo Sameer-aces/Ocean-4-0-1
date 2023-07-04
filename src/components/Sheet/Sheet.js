@@ -278,7 +278,7 @@ const Sheet = () => {
     <>
       <Header />
       <Header2 />
-      <AlanTalk processCsv={processCsv} selectGraph={selectGraph} />
+      {/* <AlanTalk processCsv={processCsv} selectGraph={selectGraph} /> */}
       <hr></hr>
       <div className="third-line">
         <div className="field">

@@ -73,6 +73,7 @@ const Footer = () => {
   return (
     <>
       <hr></hr>
+      <AlanTalk />
       {/* <AlanTalk
         handleAddSheet={handleAddSheet}
         handleAddDashboard={handleAddDashboard}
@@ -97,11 +98,18 @@ const Footer = () => {
         <button onClick={handleAddSheet}>
           <FaAngleRight />
         </button>
-        {dashboards.map((dashboard, idx) => (
-          <button key={idx}>
-            <Link to={`/dashboard/${dashboard.name}`}>{dashboard.name}</Link>
-          </button>
-        ))}
+        {dashboards.map(
+          (dashboard, idx) => (
+            console.log(dashboards),
+            (
+              <button key={idx}>
+                <Link to={`/dashboard/${dashboard.name}`}>
+                  {dashboard.name}
+                </Link>
+              </button>
+            )
+          )
+        )}
         <button onClick={handleAddDashboard} disabled={disableComponenet}>
           <FaCompress id="disableFooterStory" />
         </button>

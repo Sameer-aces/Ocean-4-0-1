@@ -34,7 +34,7 @@ export const GlobalProvider = ({ children }) => {
   const [selectedWBSheet, setSelectedWBSheet] = useState();
   const [sortType, setSortType] = useState();
   const [sort, setSort] = useState();
-  const [filterValue, setFilterValue] = useState();
+  const [filterValue, setFilterValue] = useState(0);
   const [filterOperator, setFilterOperator] = useState();
   const [filterType, setFilterType] = useState();
   const [modalIsOpen, setIsOpen] = useState(false);
