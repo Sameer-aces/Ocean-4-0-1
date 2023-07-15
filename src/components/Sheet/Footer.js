@@ -73,7 +73,7 @@ const Footer = () => {
   return (
     <>
       <hr></hr>
-      <AlanTalk />
+      <AlanTalk  />
       {/* <AlanTalk
         handleAddSheet={handleAddSheet}
         handleAddDashboard={handleAddDashboard}

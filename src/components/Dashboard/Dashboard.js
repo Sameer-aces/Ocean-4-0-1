@@ -25,16 +25,24 @@ const Dashboard = () => {
 
   const handleDrop = (index) => {
     const dragSheet = dragItem.current;
-    console.log(dragSheet, dragItem);
     const updatedDashboard = dashboards.find(
       (dashboard) => dashboard.name === dashboardParam
     );
     updatedDashboard.graphs[index] = dragSheet;
-    console.log(updatedDashboard.graphs[index], updatedDashboard);
     const tempDashboards = dashboards.map((dashboard) =>
       dashboard.name === dashboardParam ? updatedDashboard : dashboard
     );
     setDashboards(tempDashboards);
+    // console.log(
+    //   sheets.map((x) => {
+    //     if (x.name === "sheet3") {
+    //       console.log("yes there");
+    //       dragItem.current = x;
+    //       updatedDashboard.graphs[4] = x;
+    //       console.log(dragItem.current, x);
+    //     }
+    //   })
+    // );
   };
   function mobileView() {
     document.getElementById("myDIV").style.width = "470px";

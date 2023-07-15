@@ -61,10 +61,12 @@ export const GlobalProvider = ({ children }) => {
   const [fileName, setFileName] = useState();
   const [modalIsOpenFilter, setIsOpenFilter] = useState(false);
   const [selectValue, setSelectValue] = useState();
-
+  const [selected, setSelected] = useState();
   return (
     <GlobalContext.Provider
       value={{
+        selected,
+        setSelected,
         selectValue,
         setSelectValue,
         modalIsOpenFilter,

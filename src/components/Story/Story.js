@@ -11,23 +11,26 @@ import { useEffect } from "react";
 //Second commit
 const Story = () => {
   const dragItem = useRef();
-  const [selected, setSelected] = useState();
+  // const [selected, setSelected] = useState();
 
   const {
     sheets,
     dashboards,
     storys,
     setStorys,
-    container,
     selectedStory,
     setSelectedStory,
+    selected,
+    setSelected,
   } = useContext(GlobalContext);
 
   const storyParam = useParams().story;
 
   const handleDrop = (index) => {
     const dragSheet = dragItem.current;
+    console.log(dragItem, dragSheet);
     const updatedStory = storys.find((story) => story.name === storyParam);
+    console.log(updatedStory);
     updatedStory.buttonContain[index] = dragSheet;
     const tempStorys = storys.map((story) =>
       story.name === storyParam ? updatedStory : story
@@ -44,7 +47,7 @@ const Story = () => {
     );
     setStorys(tempStorys);
   }
-
+  console.log(selected, selectedStory?.buttonContain);
   useEffect(() => {
     setSelectedStory(storys.find((s) => s.name === storyParam));
   }, [storyParam, selectedStory]);
@@ -147,7 +150,7 @@ const Story = () => {
         </div>
       </div>
 
-      <Footer />
+      <Footer handleAddContainer={handleAddContainer} />
     </>
   );
 };

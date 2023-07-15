@@ -1,4 +1,10 @@
-import React, { useCallback, useEffect, useState, useContext } from "react";
+import React, {
+  useCallback,
+  useEffect,
+  useState,
+  useContext,
+  useRef,
+} from "react";
 import alanBtn from "@alan-ai/alan-sdk-web";
 import { GlobalContext } from "../../GlobalProvider";
 import { useNavigate, useParams, Link } from "react-router-dom";
@@ -17,13 +23,23 @@ const COMMANDS = {
   AddSheet: "AddSheet",
   AddDashboard: "AddDashboard",
   AddStory: "AddStory",
+  navigates: "navigates",
   navigateDashboard: "navigateDashboard",
   navigatesheet: "navigatesheet",
   navigateStory: "navigateStory",
+  initialDrop: "initalDrop",
+  handleDropDashboard: "handleDropDashboard",
+  handleAddContainer: "handleAddContainer",
+  dropSheetContainer: "dropSheetContainer",
+  dropDashboardContainer: "dropDashboardContainer",
   logout: "logout",
 };
 const AlanTalk = (props) => {
+  const dragItem = useRef();
   const sheetParam = useParams().sheet;
+  const dashboardParam = useParams().dashboard;
+  const storyParam = useParams().story;
+
   const [alanInstance, setAlanInstance] = useState();
   let navigate = useNavigate();
   const {
@@ -39,16 +55,19 @@ const AlanTalk = (props) => {
     setStorys,
     storys,
     setFilterType,
-    setFilterValue,
+    setSelectedStory,
     setSelectValue,
     dashboards,
     setIsOpen,
+    selectedStory,
+    selected,
+    setSelected,
   } = useContext(GlobalContext);
   const Hello = useCallback(() => {
     alanInstance.playText(`Hi ${loginUsername} How can I help you?
 
     `);
-    //grettings output all int his function
+    //grettings output all int his functionyr5u
   }, [alanInstance]);
   const PlotGraphs = useCallback(() => {
     alanInstance.playText("What plot do you need?");
@@ -149,15 +168,35 @@ const AlanTalk = (props) => {
   const condition = () => {
     setIsOpen(true);
   };
-
+  const navigates = ({ detail: { navigateTo } }) => {
+    alanInstance.playText(`${navigateTo}`);
+    const options = navigateTo.toLowerCase(navigateTo);
+    console.log(options);
+    switch (options) {
+      case "sheet":
+        navigate("/sheet/sheet", { replace: "true" });
+        break;
+      case "data source":
+        navigate("/dataSource", { replace: "true" });
+        break;
+      case "dashboard":
+        navigate("/dashboard/dashboard", { replace: "true" });
+        break;
+      case "story":
+        navigate("/story/story", { replace: "true" });
+        break;
+      case "analytics":
+        navigate("/AnalyticsMain", { replace: "true" });
+        break;
+      default:
+        console.log("break");
+        break;
+    }
+  };
   const navigatesheet = ({ detail: { value } }) => {
     console.log(`sheet`.concat(value));
     alanInstance.playText(`sheet`.concat(value));
-    if (!value) {
-      navigate(`/Sheet/sheet`, { replace: true });
-    } else {
-      navigate(`/Sheet/sheet`.concat(value), { replace: true });
-    }
+    navigate(`/dashboard/dashboard`.concat(value), { replace: true });
   };
   const navigateDashboard = ({ detail: { value } }) => {
     console.log(`sheet`.concat(value));
@@ -228,6 +267,74 @@ const AlanTalk = (props) => {
       );
     }
   };
+  const initalDrop = ({ detail: { initalSheet, graphNumber } }) => {};
+  const handleDropDashboard = ({ detail: { sheetName, graphNumber } }) => {
+    const updatedDashboard = dashboards.find(
+      (dashboard) => dashboard.name === dashboardParam
+    );
+    const sheet = "sheet".concat(sheetName);
+    console.log(sheet);
+    sheets.map((x) => {
+      if (x.name === sheet) {
+        alanInstance.playText("dropping sheet");
+        dragItem.current = x;
+        updatedDashboard.graphs[graphNumber] = x;
+        const tempDashboards = dashboards.map((dashboard) =>
+          dashboard.name === dashboardParam ? updatedDashboard : dashboard
+        );
+        setDashboards(tempDashboards);
+      }
+    });
+  };
+  const handleAddContainer = () => {
+    const updatedStory = storys.find((story) => story.name === storyParam);
+    console.log(updatedStory);
+    updatedStory.buttonContain.push(updatedStory.buttonContain.length);
+    const tempStorys = storys.map((story) =>
+      story.name === storyParam ? updatedStory : story
+    );
+    setStorys(tempStorys);
+  };
+
+  const dropSheetContainer = ({ detail: { sheetName, containerNumber } }) => {
+    const updatedStory = storys.find((story) => story.name === storyParam);
+    console.log(updatedStory);
+    const sheet = "sheet".concat(sheetName);
+    sheets.map((x) => {
+      if (x.name === sheet) {
+        alanInstance.playText("dropping Sheet in story");
+        dragItem.current = x;
+        updatedStory.buttonContain[containerNumber] = x;
+        const tempStorys = storys.map((story) =>
+          story.name === storyParam ? updatedStory : story
+        );
+        setStorys(tempStorys);
+        setSelectedStory(storys.find((s) => s.name === storyParam));
+      }
+    });
+    setSelected(selectedStory?.buttonContain[containerNumber].name);
+  };
+  const dropDashboardContainer = ({
+    detail: { sheetName, containerNumber },
+  }) => {
+    const updatedStory = storys.find((story) => story.name === storyParam);
+    console.log(updatedStory);
+    const sheet = "dashboard".concat(sheetName);
+    dashboards.map((x) => {
+      if (x.name === sheet) {
+        console.log(x);
+        alanInstance.playText("dropping dashboard in story");
+        dragItem.current = x;
+        updatedStory.buttonContain[containerNumber] = x;
+        const tempStorys = storys.map((story) =>
+          story.name === storyParam ? updatedStory : story
+        );
+        setStorys(tempStorys);
+        setSelectedStory(storys.find((s) => s.name === storyParam));
+      }
+    });
+    setSelected(selectedStory?.buttonContain[containerNumber].name);
+  };
   const logout = useCallback(() => {
     alanInstance.playText(`Thank you`);
     logoutUser();
@@ -248,8 +355,17 @@ const AlanTalk = (props) => {
     window.addEventListener(COMMANDS.navigatesheet, navigatesheet);
     window.addEventListener(COMMANDS.AddDashboard, AddDashboard);
     window.addEventListener(COMMANDS.navigateDashboard, navigateDashboard);
+    window.addEventListener(COMMANDS.handleDropDashboard, handleDropDashboard);
     window.addEventListener(COMMANDS.AddStory, AddStory);
+    window.addEventListener(COMMANDS.navigates, navigates);
     window.addEventListener(COMMANDS.navigateStory, navigateStory);
+    window.addEventListener(COMMANDS.handleAddContainer, handleAddContainer);
+    window.addEventListener(COMMANDS.dropSheetContainer, dropSheetContainer);
+    window.addEventListener(
+      COMMANDS.dropDashboardContainer,
+      dropDashboardContainer
+    );
+
     window.addEventListener(COMMANDS.logout, logout);
 
     return () => {
@@ -262,12 +378,30 @@ const AlanTalk = (props) => {
       window.removeEventListener(COMMANDS.filter, filter);
       window.removeEventListener(COMMANDS.condition, condition);
       window.removeEventListener(COMMANDS.AddSheet, AddSheet);
+      window.removeEventListener(COMMANDS.navigates, navigates);
       window.removeEventListener(COMMANDS.navigatesheet, navigatesheet);
       window.removeEventListener(COMMANDS.AddDashboard, AddDashboard);
       window.removeEventListener(COMMANDS.navigateDashboard, navigateDashboard);
-      window.removeEventListener(COMMANDS.AddStory, AddStory);
+      window.removeEventListener(
+        COMMANDS.handleDropDashboard,
+        handleDropDashboard
+      );
 
+      window.removeEventListener(COMMANDS.AddStory, AddStory);
       window.removeEventListener(COMMANDS.navigateStory, navigateStory);
+      window.removeEventListener(
+        COMMANDS.handleAddContainer,
+        handleAddContainer
+      );
+      window.removeEventListener(
+        COMMANDS.dropSheetContainer,
+        dropSheetContainer
+      );
+      window.removeEventListener(
+        COMMANDS.dropDashboardContainer,
+        dropDashboardContainer
+      );
+
       window.removeEventListener(COMMANDS.logout, logout);
     };
   }, [

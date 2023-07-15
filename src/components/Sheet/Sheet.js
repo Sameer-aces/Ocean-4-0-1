@@ -273,7 +273,8 @@ const Sheet = () => {
       x.style.display = "none";
     }
   };
-
+  let customWidth = selectedSheet?.row?.values.length * 50;
+  console.log(customWidth);
   return (
     <>
       <Header />
@@ -428,7 +429,8 @@ const Sheet = () => {
 
             {/* <ReactWordcloud words={words} /> */}
           </div>
-          <div id="plots">
+          {/* <Scrollbars> */}
+          <div id="plots"     >
             {tableData &&
               tableData.headings &&
               tableData.side_headings &&
@@ -695,7 +697,7 @@ const Sheet = () => {
                   // autosize: false,
                   xaxis: { title: { text: selectedSheet?.col?.key } },
                   yaxis: { title: { text: selectedSheet?.row?.key } },
-                  width: 840,
+                  width:840 ,
                   height: 420,
                   fontSize: 2,
                   mapbox: { style: "open-street-map" },
@@ -776,8 +778,10 @@ const Sheet = () => {
               />
             )}
           </div>
+          {/* </Scrollbars> */}
         </div>
       </div>
+
       {/* Renaming sheet Box */}
       <Menu showMenu={showMenu} />
       <button
